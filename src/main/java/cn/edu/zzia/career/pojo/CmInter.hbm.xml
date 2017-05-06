@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="cn.edu.zzia.career.pojo.CmInter" table="cm_inter" schema="career" dynamic-insert="true" dynamic-update="true">
+        <id name="iid" type="java.lang.Integer">
+            <column name="iid" />
+            <generator class="native" />
+        </id>
+        <property name="iaddress" column="iaddress"/>
+        <property name="itype" column="itype"/>
+        <property name="itime" column="itime"/>
+        <property name="isuccess" column="isuccess"/>
+        <property name="istate" column="istate" not-null="false"/>
+        <property name="isuccleave" column="isuccleave"/>
+        <many-to-one name="cmStudentBySid" class="cn.edu.zzia.career.pojo.CmStudent" lazy="false">
+            <column name="sid"/>
+        </many-to-one>
+        <many-to-one name="cmRecruitByRid" class="cn.edu.zzia.career.pojo.CmRecruit" lazy="false">
+            <column name="rid"/>
+        </many-to-one>
+        <many-to-one name="cmAreaByAid" class="cn.edu.zzia.career.pojo.CmArea">
+            <column name="aid"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

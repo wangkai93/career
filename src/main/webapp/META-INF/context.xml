@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <Context>
+  <!-- 服务器调用类的时候，它有两种方式传递资源：1.调用方法时，通过参数传递进去 2.jndi服务器启动时，为一个程序创造了一些资源然后把这些资源绑定到一个jndi容器上 ，应用程想调用某个资源，直接去容器里面去就行了-->
+  <Resource
+        name="jdbc/Mysql"
+        factory="com.alibaba.druid.pool.DruidDataSourceFactory"
+        auth="Container"
+        type="javax.sql.DataSource"
+        driverClassName="com.mysql.jdbc.Driver"
+        url="jdbc:mysql://115.159.100.155:3306/career?useUnicode=true&amp;characterEncoding=utf-8"
+        username="root"
+        password="!q2w3e4r5t"
+        initialSize="5"
+        maxActive="200"
+        maxWait="60000"
+        minIdle="1"
+        timeBetweenEvictionRunsMillis="60000"
+        minEvictableIdleTimeMillis="300000"
+        testWhileIdle="true"
+        testOnBorrow="false"
+        testOnReturn="false"
+        poolPreparedStatements="true"
+        maxOpenPreparedStatements="20"
+        filters="stat"/>
+
+</Context>
+
+ 
+

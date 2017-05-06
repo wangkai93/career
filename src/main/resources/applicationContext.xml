@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context.xsd 
+       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd 
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/Mysql"/>
+    </bean>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:cn/edu/zzia/career/pojo/CmArea.hbm.xml</value>
+                <value>classpath:cn/edu/zzia/career/pojo/CmCompany.hbm.xml</value>
+                <value>classpath:cn/edu/zzia/career/pojo/CmDirection.hbm.xml</value>
+                <value>classpath:cn/edu/zzia/career/pojo/CmEmp.hbm.xml</value>
+                <value>classpath:cn/edu/zzia/career/pojo/CmGrade.hbm.xml</value>
+                <value>classpath:cn/edu/zzia/career/pojo/CmInter.hbm.xml</value>
+                <value>classpath:cn/edu/zzia/career/pojo/CmJob.hbm.xml</value>
+                <value>classpath:cn/edu/zzia/career/pojo/CmRecruit.hbm.xml</value>
+                <value>classpath:cn/edu/zzia/career/pojo/CmStudent.hbm.xml</value>
+                <value>classpath:cn/edu/zzia/career/pojo/CmUnemp.hbm.xml</value>
+                <value>classpath:cn/edu/zzia/career/pojo/CmUser.hbm.xml</value>
+                <value>classpath:cn/edu/zzia/career/pojo/NoteBook.hbm.xml</value>
+                 <value>classpath:cn/edu/zzia/career/pojo/Department.hbm.xml</value>
+            </list>
+        </property>
+
+        <property name="hibernateProperties">
+            <value>
+                hibernate.hbm2ddl.auto=update
+                hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+                hibernate.show_sql=true
+                hibernate.format_sql=true
+                hibernate.connection.autocommit=true
+            </value>
+        </property>
+
+    </bean>
+
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!-- 事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="add*" propagation="REQUIRED" read-only="false" />
+            <tx:method name="update*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="del*" propagation="REQUIRED" read-only="false"/>
+            <tx:method name="find*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="get*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="page*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="createHQLQuery" propagation="REQUIRED" />
+            <tx:method name="createSQLQuery" propagation="REQUIRED" />
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="txPointcut" expression="(execution(* cn.edu.zzia.career.service.*.*(..))) or (execution(* cn.edu.zzia.career.tools.InputData.*(..)))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+    </aop:config>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10485760" />
+    </bean>
+</beans>

@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="cn.edu.zzia.career.pojo.CmArea" table="cm_area" schema="career" dynamic-update="true" dynamic-insert="true" >
+        <id name="aid" type="java.lang.Integer">
+            <column name="aid" />
+            <generator class="native" />
+        </id>
+        <property name="aprovince" column="aprovince"/>
+        <property name="acity" column="acity"/>
+        <set name="cmCompaniesByAid" inverse="true" cascade="all">
+            <key>
+                <column name="aid"/>
+            </key>
+            <one-to-many not-found="ignore" class="cn.edu.zzia.career.pojo.CmCompany"/>
+        </set>
+        <set name="cmIntersByAid" inverse="true" cascade="all">
+            <key>
+                <column name="aid"/>
+            </key>
+            <one-to-many not-found="ignore" class="cn.edu.zzia.career.pojo.CmInter"/>
+        </set>
+        <set name="cmRecruitsByAid" inverse="true" cascade="all">
+            <key>
+                <column name="aid"/>
+            </key>
+            <one-to-many not-found="ignore" class="cn.edu.zzia.career.pojo.CmRecruit"/>
+        </set>
+    </class>
+</hibernate-mapping>

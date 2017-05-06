@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="cn.edu.zzia.career.pojo.CmUser" table="cm_user" schema="career" dynamic-insert="true" dynamic-update="true">
+        <id name="uid" type="java.lang.Integer">
+            <column name="uid" />
+            <generator class="native" />
+        </id>
+        <property name="uname" column="uname"/>
+        <property name="urname" column="urname"/>
+        <property name="upwd" column="upwd"/>
+        <property name="uface" column="uface"/>
+        <property name="uemail" column="uemail"/>
+        <property name="uphone" column="uphone"/>
+        <property name="urank" column="urank"/>
+        <property name="ustate" column="ustate" not-null="false"/>
+        <set name="cmEmpsByUid" inverse="true" cascade="all">
+            <key>
+                <column name="uid"/>
+            </key>
+            <one-to-many not-found="ignore" class="cn.edu.zzia.career.pojo.CmEmp"/>
+        </set>
+    </class>
+</hibernate-mapping>

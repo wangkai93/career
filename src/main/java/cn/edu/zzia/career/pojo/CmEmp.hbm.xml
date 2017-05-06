@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="cn.edu.zzia.career.pojo.CmEmp" table="cm_emp" schema="career" dynamic-insert="true" dynamic-update="true">
+        <id name="eid" type="java.lang.Integer">
+            <column name="eid" />
+            <generator class="native" />
+        </id>
+        <property name="etime" column="etime" not-null="false"/>
+        <property name="esalary" column="esalary"/>
+        <property name="einfo" column="einfo"/>
+        <property name="estate" column="estate"/>
+        <property name="ewq" column="ewq"/>
+        <property name="eleave" column="eleave"/>
+        <property name="ereason" column="ereason"/>
+        <property name="ejobName" column="ejob_name"/>
+        
+        <many-to-one name="cmStudentBySid" class="cn.edu.zzia.career.pojo.CmStudent">
+            <column name="sid"/>
+        </many-to-one>
+        <many-to-one name="cmJobByJid" class="cn.edu.zzia.career.pojo.CmJob">
+            <column name="jid"/>
+        </many-to-one>
+        <many-to-one name="cmUserByUid" class="cn.edu.zzia.career.pojo.CmUser">
+            <column name="uid"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

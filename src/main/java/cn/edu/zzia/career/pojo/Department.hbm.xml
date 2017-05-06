@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+	<class name="cn.edu.zzia.career.pojo.Department" table="cm_department"
+		schema="career" dynamic-update="true" dynamic-insert="true">
+		<id name="did" type="java.lang.Integer">
+			<column name="nid" />
+			<generator class="native" />
+		</id>
+		<property name="depName" column="depName" />
+		<property name="stuCount" column="stu_count" />
+		<property name="description" column="description" />
+	</class>
+</hibernate-mapping>
