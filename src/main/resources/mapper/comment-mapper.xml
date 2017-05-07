@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zzia.career.dao.lt.CommentMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.zzia.career.pojo.lt.Comment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="comment_id" jdbcType="VARCHAR" property="commentId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_icon" jdbcType="VARCHAR" property="userIcon" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="topic_id" jdbcType="VARCHAR" property="topicId"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, parent_id, comment_id, content, create_time, user_id, user_name, user_icon, status, topic_id
+  </sql>
+  <select id="selectList" parameterType="Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from comment
+    <where>
+    	<if test="topicId != null">
+    		topic_id = #{topicId}
+    	</if>
+    	<if test="userId != null">
+    		and user_id = #{userId}
+    	</if>
+    	<if test="status != null">
+    		and status = #{status}
+    	</if>
+    </where>
+    ORDER BY create_time DESC
+    LIMIT #{offset},#{limit}
+  </select>
+  
+  <insert id="insert" parameterType="cn.edu.zzia.career.pojo.lt.Comment">
+    insert into comment (id, parent_id, comment_id, 
+      content, create_time, user_id, 
+      user_name, user_icon, status, topic_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=VARCHAR}, #{commentId,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{userIcon,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
+      #{topicId}
+      )
+  </insert>
+  
+  <update id="update" parameterType="cn.edu.zzia.career.pojo.lt.Comment">
+    update comment
+    <set>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userIcon != null">
+        user_icon = #{userIcon,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

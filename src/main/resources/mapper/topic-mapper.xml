@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.zzia.career.dao.lt.TopicMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.zzia.career.pojo.lt.Topic">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="topic_id" jdbcType="VARCHAR" property="topicId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="comment_num" jdbcType="INTEGER" property="commentNum" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, topic_id, content, create_time, comment_num, user_id, user_name, icon, status
+  </sql>
+  <select id="selectById" parameterType="String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from topic
+    where topic_id = #{topicId}
+  </select>
+  
+  <delete id="delete" parameterType="String">
+    delete 
+    from topic
+    where topic_id = #{topicId}
+  </delete>
+  
+  <select id="selectList" parameterType="Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from topic
+    <where>
+    	<if test="userId != null">
+    		user_id = #{userId}
+    	</if>
+    	<if test="status != null">
+    		and status = #{status}
+    	</if>
+    </where>
+    ORDER BY create_time DESC
+    LIMIT #{offset},#{limit}
+  </select>
+  
+  
+  <insert id="insert" parameterType="cn.edu.zzia.career.pojo.lt.Topic">
+    insert into topic (id, topic_id, content, 
+      create_time, comment_num, user_id, 
+      user_name, icon, status
+      )
+    values (#{id,jdbcType=INTEGER}, #{topicId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=INTEGER}, #{commentNum,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}
+      )
+  </insert>
+  
+  <update id="update" parameterType="cn.edu.zzia.career.pojo.lt.Topic">
+    update topic
+    <set>
+      <if test="topicId != null">
+        topic_id = #{topicId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=INTEGER},
+      </if>
+      <if test="commentNum != null">
+        comment_num = #{commentNum,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectJoinList" parameterType="Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from topic
+    WHERE topic_id in 
+    (
+    	SELECT topic_id FROM comment WHERE user_id = #{userId} and status = 1
+    )
+     AND user_id != #{userId} and status = 1
+    ORDER BY create_time DESC
+    LIMIT #{offset},#{limit}
+  </select>
+  
+</mapper>
